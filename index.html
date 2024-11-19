@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Виджет OBS для голосования в чате</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: rgba(0, 0, 0, 0);
+      font-family: Arial, sans-serif;
+      color: black;
+    }
+    #widget {
+      display: none;
+      width: 400px;
+      height: 200px;
+      background: white;
+      border: 2px solid black;
+      border-radius: 10px;
+      text-align: center;
+      padding: 20px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    #result {
+      font-size: 24px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="widget">
+    <p id="message">Отправьте в чат цифру с вашим выбором</p>
+    <p id="result"></p>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/comfy.js/dist/comfy.min.js"></script>
+  <script src="widget.js"></script>
+</body>
+</html>
