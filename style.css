@@ -1,50 +1,54 @@
-/* styles.css */
-body, html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: transparent;
-    overflow: hidden;
-  }
-  
-  #widget {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.7); /* Полупрозрачный белый */
-    color: #000;
-    font-family: 'Roboto', sans-serif;
-    text-align: center;
-  }
-  
-  #vote-text {
-    width: 80%;
-  }
-  
-  .headline {
-    font-size: 22px;
-    font-weight: bold;
-    margin: 0 0 10px;
-  }
-  
-  .instruction {
-    font-size: 24px;
-    margin: 0 0 20px;
-  }
-  
-  #vote-count {
-    font-size: 20px;
-    margin: 0 0 15px;
-  }
-  
-  #countdown-timer {
-    font-size: 22px;
-    color: blue;
-  }
-  
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+#poll-container {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Инструкции голосования */
+#poll-instructions {
+  font-family: 'Roboto', sans-serif;
+  font-size: var(--instructions-font-size, 18px); /* Позволяет задавать размер через CSS-переменные */
+  color: var(--instructions-color, #333); /* Позволяет задавать цвет через CSS-переменные */
+  margin: 10px;
+}
+
+/* Таймер */
+#poll-timer {
+  font-family: 'Roboto', sans-serif;
+  font-size: var(--timer-font-size, 24px); /* Настраиваемый размер */
+  color: var(--timer-color, blue); /* Настраиваемый цвет */
+  font-weight: bold;
+}
+
+#poll-timer.red {
+  color: var(--timer-warning-color, red); /* Настраиваемый цвет при низком времени */
+}
+
+/* Результаты */
+#poll-results {
+  font-family: 'Roboto', sans-serif;
+  font-size: var(--results-font-size, 20px); /* Настраиваемый размер */
+  color: var(--results-color, #444); /* Настраиваемый цвет */
+  margin: 10px;
+}
