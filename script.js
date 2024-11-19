@@ -7,9 +7,10 @@ let votes = {}; // Объект для хранения голосов
 let userVotes = {}; // Объект для отслеживания, кто уже голосовал
 let timer;
 
-// Получаем имя канала из URL
+// Переменные для канала и модераторов
 const urlParams = new URLSearchParams(window.location.search);
 const channelName = urlParams.get("channel");
+const allowedModerators = ["Nikothann"]; // Список модераторов, которые могут начать голосование ["Moderator_1", "Moderator_2", ...]
 
 if (!channelName) {
   console.error("Имя канала не указано. Добавьте параметр ?channel=ИмяКанала в URL.");
@@ -20,20 +21,31 @@ if (!channelName) {
   ComfyJS.Init(channelName);
 
   ComfyJS.onCommand = (user, command, message, flags, extra) => {
-    if (command === "голосование" && flags.mod && user === "Nikothann") {
-      startVoting();
+    if (command === "голосование" && isAllowedToStart(user, flags)) {
+      const args = message.split(" ");
+      const duration = parseInt(args[0], 10); // Длительность голосования в секундах
+      startVoting(isNaN(duration) ? 90 : duration); // Если длительность не указана, используем 90 секунд
     }
   };
 }
 
-function startVoting() {
+function isAllowedToStart(user, flags) {
+  // Проверяем, может ли пользователь начать голосование
+  return (
+    user === channelName || // Владелец канала
+    allowedModerators.includes(user) || // Допустимые модераторы
+    flags.mod // Модератор с флагом mod
+  );
+}
+
+function startVoting(duration) {
   if (votingActive) return; // Если голосование уже идет, ничего не делаем
   votingActive = true;
   votes = {};
   userVotes = {}; // Очищаем данные о голосах пользователей
 
   widget.style.display = "block";
-  message.textContent = "Отправьте в чат цифру с вашим выбором";
+  message.textContent = `Отправьте в чат цифру с вашим выбором. Голосование длится ${duration} секунд.`;
   result.textContent = "";
 
   ComfyJS.onChat = (user, message) => {
@@ -49,10 +61,10 @@ function startVoting() {
     }
   };
 
-  timer = setTimeout(endVoting, 90 * 1000); // Завершить голосование через 1.5 минуты
+  timer = setTimeout(() => endVoting(duration), duration * 1000); // Завершить голосование через указанное время
 }
 
-function endVoting() {
+function endVoting(duration) {
   votingActive = false;
 
   // Найти самый популярный ответ
@@ -71,5 +83,5 @@ function endVoting() {
 
   setTimeout(() => {
     widget.style.display = "none";
-  }, 30 * 1000); // Скрыть через 30 секунд
+  }, 15 * 1000); // Скрыть через 15 секунд
 }
