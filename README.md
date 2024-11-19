@@ -1,6 +1,6 @@
 # Инструкция
 
-1. Копируете ссылку `https://nifoleyarc.github.io/chatPoll/?channel=ТвичКанал`
+1. Копируете ссылку `https://nifoleyarc.github.io/twitch-chat-poll/?channel=ТвичКанал`
 2. Заменяете `ТвичКанал` на свой канал на Твиче
 3. Добавляете в OBS как источник браузера
 

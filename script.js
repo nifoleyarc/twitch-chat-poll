@@ -7,10 +7,9 @@ let votes = {}; // Объект для хранения голосов
 let userVotes = {}; // Объект для отслеживания, кто уже голосовал
 let timer;
 
-// Переменные для канала и модераторов
+// Получаем имя канала из URL
 const urlParams = new URLSearchParams(window.location.search);
 const channelName = urlParams.get("channel");
-const allowedModerators = ["Nikothann"]; // Список модераторов, которые могут начать голосование ["Moderator_1", "Moderator_2", ...]
 
 if (!channelName) {
   console.error("Имя канала не указано. Добавьте параметр ?channel=ИмяКанала в URL.");
@@ -22,24 +21,29 @@ if (!channelName) {
 
   ComfyJS.onCommand = (user, command, message, flags, extra) => {
     if (command === "голосование" && isAllowedToStart(user, flags)) {
-      const args = message.split(" ");
-      const duration = parseInt(args[0], 10); // Длительность голосования в секундах
-      startVoting(isNaN(duration) ? 90 : duration); // Если длительность не указана, используем 90 секунд
+      handleVotingCommand(message);
     }
   };
 }
 
 function isAllowedToStart(user, flags) {
   // Проверяем, может ли пользователь начать голосование
-  return (
-    user === channelName || // Владелец канала
-    allowedModerators.includes(user) || // Допустимые модераторы
-    flags.mod // Модератор с флагом mod
-  );
+  return flags.mod || flags.broadcaster;
+}
+
+function handleVotingCommand(message) {
+  if (votingActive) {
+    // Если голосование уже активно, завершить его досрочно
+    endVoting();
+  } else {
+    // Если голосование не активно, начать новое
+    const args = message.split(" ");
+    const duration = parseInt(args[0], 10); // Длительность голосования в секундах
+    startVoting(isNaN(duration) ? 90 : duration); // Если длительность не указана, используем 90 секунд
+  }
 }
 
 function startVoting(duration) {
-  if (votingActive) return; // Если голосование уже идет, ничего не делаем
   votingActive = true;
   votes = {};
   userVotes = {}; // Очищаем данные о голосах пользователей
@@ -61,10 +65,12 @@ function startVoting(duration) {
     }
   };
 
-  timer = setTimeout(() => endVoting(duration), duration * 1000); // Завершить голосование через указанное время
+  timer = setTimeout(() => endVoting(), duration * 1000); // Завершить голосование через указанное время
 }
 
-function endVoting(duration) {
+function endVoting() {
+  if (!votingActive) return; // Если голосование уже завершено, ничего не делаем
+
   votingActive = false;
 
   // Найти самый популярный ответ
@@ -81,7 +87,9 @@ function endVoting(duration) {
   message.textContent = `Победитель голосования: ${winner || "Нет ответа"}`;
   result.textContent = `С результатом: ${maxVotes || 0} голосов`;
 
+  clearTimeout(timer); // Останавливаем таймер, если голосование завершено досрочно
+
   setTimeout(() => {
     widget.style.display = "none";
-  }, 15 * 1000); // Скрыть через 15 секунд
+  }, 30 * 1000); // Скрыть через 30 секунд
 }
