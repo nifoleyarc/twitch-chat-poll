@@ -85,7 +85,7 @@ function endVoting() {
   }
 
   message.textContent = `Победитель голосования: ${winner || "Нет ответа"}`;
-  result.textContent = `С результатом: ${maxVotes || 0} голосов`;
+  result.textContent = `Количество голосов: ${maxVotes || 0}`;
 
   clearTimeout(timer); // Останавливаем таймер, если голосование завершено досрочно
 
