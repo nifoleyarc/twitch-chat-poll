@@ -99,6 +99,10 @@ function endVoting() {
 
   clearInterval(countdownInterval); // Останавливаем таймер обратного отсчета
 
+  // Скрыть таймер
+  countdownElement.textContent = "";
+  countdownElement.style.display = "none";
+
   // Найти самый популярный ответ
   let maxVotes = 0;
   let winner = null;
@@ -117,5 +121,6 @@ function endVoting() {
 
   setTimeout(() => {
     widget.style.display = "none";
+    countdownElement.style.display = "block"; // Восстанавливаем видимость таймера для следующего голосования
   }, 10 * 1000); // Скрыть через 10 секунд
 }
