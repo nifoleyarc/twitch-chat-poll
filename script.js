@@ -115,7 +115,7 @@ function endVoting() {
   }
 
   message.textContent = `Победитель голосования: ${winner || "Нет ответа"}`;
-  result.textContent = `Проголосовавших: ${Object.keys(userVotes).length || 0}`;
+  result.textContent = `Количество проголосовавших: ${Object.keys(userVotes).length || 0}`;
 
   clearTimeout(timer); // Останавливаем таймер, если голосование завершено досрочно
 
