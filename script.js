@@ -119,7 +119,7 @@ function endVoting() {
 
   // Добавляем класс "winner" для стилизации сообщения о победителе
   message.classList.add("winner");
-  message.textContent = `Победитель голосования: ${winner || "Нет ответа"}`;
+  message.textContent = `Победитель голосования: #${winner || "Нет ответа"}`;
 
   clearTimeout(timer); // Останавливаем таймер, если голосование завершено досрочно
 
