@@ -14,21 +14,24 @@
       font-family: Arial, sans-serif;
       color: black;
     }
-    #widget {
+        #widget {
       font-family: 'Montserrat', sans-serif;
       font-size: 24px;
       display: none;
       width: 400px;
       height: 200px;
-      background: white;
-      border: 2px solid black;
-      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.3); /* Полупрозрачный белый цвет */
+      border: 2px solid rgba(255, 255, 255, 0.5); /* Полупрозрачная рамка */
+      border-radius: 10px;
       text-align: center;
       padding: 20px;
       position: fixed;
       bottom: 20px; /* Расположение от нижнего края */
-      right: 20px;  /* Расположение от правого края */
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      right: 20px; /* Расположение от правого края */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Тень */
+      backdrop-filter: blur(10px); /* Эффект размытия фона */
+      -webkit-backdrop-filter: blur(10px); /* Поддержка в Safari */
+      color: black;
     }
     #result {
       font-family: 'Montserrat', sans-serif;
@@ -40,8 +43,8 @@
 <body>
   <div id="widget">
     <p id="message">Отправьте в чат номер, за который хотите проголосовать1</p>
-    <p id="voterCount"></p>
-    <p id="countdown" style="color: blue; font-size: 20px; margin-top: 10px;"></p>
+    <p id="voterCount" style="color: rgba(53, 222, 19, 0.56); font-size: 20px; margin-top: 10px;"></p>
+    <p id="countdown" style="color: blue; font-size: 20px; margin-top: 5px;"></p>
     <p id="result"></p>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/comfy.js/dist/comfy.min.js"></script>
