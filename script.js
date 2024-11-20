@@ -102,12 +102,6 @@ function endVoting() {
 
   votingActive = false;
 
-  clearInterval(countdownInterval); // Останавливаем таймер обратного отсчета
-
-  // Скрыть таймер
-  countdownElement.textContent = "";
-  countdownElement.style.display = "none";
-
   // Найти самый популярный ответ
   let maxVotes = 0;
   let winner = null;
@@ -119,13 +113,16 @@ function endVoting() {
     }
   }
 
+  // Добавляем класс "winner" для стилизации сообщения о победителе
+  message.classList.add("winner");
   message.textContent = `Победитель голосования: ${winner || "Нет ответа"}`;
-  result.textContent = `Проголосовавших: ${Object.keys(userVotes).length || 0}`;
+  result.textContent = `Проголосовавших: ${Object.keys(userVotes).length}`;
 
   clearTimeout(timer); // Останавливаем таймер, если голосование завершено досрочно
 
   setTimeout(() => {
     widget.style.display = "none";
-    countdownElement.style.display = "block"; // Восстанавливаем видимость таймера для следующего голосования
+    message.classList.remove("winner"); // Убираем класс после скрытия виджета
   }, 10 * 1000); // Скрыть через 10 секунд
 }
+
