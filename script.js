@@ -1,11 +1,13 @@
 const widget = document.getElementById("widget");
 const message = document.getElementById("message");
 const result = document.getElementById("result");
+const countdownElement = document.getElementById("countdown");
 
 let votingActive = false;
 let votes = {}; // Объект для хранения голосов
 let userVotes = {}; // Объект для отслеживания, кто уже голосовал
 let timer;
+let countdownInterval;
 
 // Получаем имя канала из URL
 const urlParams = new URLSearchParams(window.location.search);
@@ -52,6 +54,28 @@ function startVoting(duration) {
   message.textContent = `Отправьте в чат номер, за который хотите проголосовать`;
   result.textContent = "";
 
+  let remainingTime = duration;
+
+  // Устанавливаем начальный текст таймера
+  countdownElement.textContent = `Осталось: ${remainingTime} сек.`;
+  countdownElement.style.color = "blue";
+
+  // Запускаем интервал обновления таймера
+  countdownInterval = setInterval(() => {
+    remainingTime--;
+    countdownElement.textContent = `Осталось: ${remainingTime} сек.`;
+
+    // Меняем цвет текста на красный, если осталось менее 10 секунд
+    if (remainingTime <= 10) {
+      countdownElement.style.color = "red";
+    }
+
+    if (remainingTime <= 0) {
+      clearInterval(countdownInterval);
+    }
+  }, 1000);
+
+  // Оставшаяся логика старта голосования
   ComfyJS.onChat = (user, message) => {
     if (votingActive) {
       const vote = parseInt(message.trim(), 10);
@@ -73,6 +97,8 @@ function endVoting() {
 
   votingActive = false;
 
+  clearInterval(countdownInterval); // Останавливаем таймер обратного отсчета
+
   // Найти самый популярный ответ
   let maxVotes = 0;
   let winner = null;
@@ -85,13 +111,11 @@ function endVoting() {
   }
 
   message.textContent = `Победитель голосования: ${winner || "Нет ответа"}`;
-  result.textContent = `Проголосовавших: ${maxVotes || 0}`;
-
-  
+  result.textContent = `Проголосовавших: ${Object.keys(userVotes).length || 0}`;
 
   clearTimeout(timer); // Останавливаем таймер, если голосование завершено досрочно
 
   setTimeout(() => {
     widget.style.display = "none";
-  }, 30 * 1000); // Скрыть через 30 секунд
+  }, 10 * 1000); // Скрыть через 10 секунд
 }
