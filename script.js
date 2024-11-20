@@ -54,18 +54,18 @@ function startVoting(duration) {
   widget.style.display = "block";
   message.textContent = `Отправьте в чат номер, за который хотите проголосовать`;
   result.textContent = "";
-  voterCountElement.textContent = `Проголосовавших: 0`;
+  voterCountElement.textContent = `Количество проголосовавших: 0`;
 
   let remainingTime = duration;
 
   // Устанавливаем начальный текст таймера
-  countdownElement.textContent = `Осталось: ${remainingTime} сек.`;
+  countdownElement.textContent = `${remainingTime}`;
   countdownElement.style.color = "blue";
 
   // Запускаем интервал обновления таймера
   countdownInterval = setInterval(() => {
     remainingTime--;
-    countdownElement.textContent = `Осталось: ${remainingTime} сек.`;
+    countdownElement.textContent = `${remainingTime}`;
 
     // Меняем цвет текста на красный, если осталось менее 10 секунд
     if (remainingTime <= 10) {
@@ -88,7 +88,7 @@ function startVoting(duration) {
           votes[vote] = (votes[vote] || 0) + 1; // Увеличиваем счетчик для выбранного числа
 
           // Обновляем количество проголосовавших
-          voterCountElement.textContent = `Проголосовавших: ${Object.keys(userVotes).length}`;
+          voterCountElement.textContent = `Количество проголосовавших: ${Object.keys(userVotes).length}`;
         }
       }
     }
@@ -116,7 +116,6 @@ function endVoting() {
   // Добавляем класс "winner" для стилизации сообщения о победителе
   message.classList.add("winner");
   message.textContent = `Победитель голосования: ${winner || "Нет ответа"}`;
-  result.textContent = `Проголосовавших: ${Object.keys(userVotes).length}`;
 
   clearTimeout(timer); // Останавливаем таймер, если голосование завершено досрочно
 
