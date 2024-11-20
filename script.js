@@ -2,6 +2,7 @@ const widget = document.getElementById("widget");
 const message = document.getElementById("message");
 const result = document.getElementById("result");
 const countdownElement = document.getElementById("countdown");
+const voterCountElement = document.getElementById("voterCount");
 
 let votingActive = false;
 let votes = {}; // Объект для хранения голосов
@@ -53,6 +54,7 @@ function startVoting(duration) {
   widget.style.display = "block";
   message.textContent = `Отправьте в чат номер, за который хотите проголосовать`;
   result.textContent = "";
+  voterCountElement.textContent = `Проголосовавших: 0`;
 
   let remainingTime = duration;
 
@@ -75,7 +77,7 @@ function startVoting(duration) {
     }
   }, 1000);
 
-  // Оставшаяся логика старта голосования
+  // Логика для подсчета голосов
   ComfyJS.onChat = (user, message) => {
     if (votingActive) {
       const vote = parseInt(message.trim(), 10);
@@ -84,6 +86,9 @@ function startVoting(duration) {
         if (!userVotes[user]) {
           userVotes[user] = vote; // Запоминаем, что пользователь проголосовал
           votes[vote] = (votes[vote] || 0) + 1; // Увеличиваем счетчик для выбранного числа
+
+          // Обновляем количество проголосовавших
+          voterCountElement.textContent = `Проголосовавших: ${Object.keys(userVotes).length}`;
         }
       }
     }
@@ -115,7 +120,7 @@ function endVoting() {
   }
 
   message.textContent = `Победитель голосования: ${winner || "Нет ответа"}`;
-  result.textContent = `Количество проголосовавших: ${Object.keys(userVotes).length || 0}`;
+  result.textContent = `Проголосовавших: ${Object.keys(userVotes).length || 0}`;
 
   clearTimeout(timer); // Останавливаем таймер, если голосование завершено досрочно
 
