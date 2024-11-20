@@ -1,86 +1,97 @@
-const pollContainer = document.getElementById("poll-container");
-const pollInstructions = document.getElementById("poll-instructions");
-const pollTimer = document.getElementById("poll-timer");
-const pollResults = document.getElementById("poll-results");
+const widget = document.getElementById("widget");
+const message = document.getElementById("message");
+const result = document.getElementById("result");
 
-let pollActive = false; // Указывает, активно ли голосование
-let pollDuration = 60; // Продолжительность голосования по умолчанию
-let countdownInterval; // Таймер обратного отсчета
-let votes = {}; // Хранение голосов
+let votingActive = false;
+let votes = {}; // Объект для хранения голосов
+let userVotes = {}; // Объект для отслеживания, кто уже голосовал
+let timer;
 
-// Функция запуска голосования
-function startPoll(duration) {
-  pollActive = true;
-  pollDuration = duration;
-  votes = {}; // Очищаем предыдущие голоса
-  pollResults.classList.add("hidden");
-  pollTimer.textContent = pollDuration;
-  pollTimer.classList.remove("red");
-  pollContainer.classList.remove("hidden"); // Показываем виджет
-
-  // Запуск таймера обратного отсчета
-  countdownInterval = setInterval(() => {
-    pollDuration -= 1;
-    pollTimer.textContent = pollDuration;
-    if (pollDuration <= 10) {
-      pollTimer.classList.add("red"); // Меняем цвет на красный
-    }
-    if (pollDuration <= 0) {
-      endPoll();
-    }
-  }, 1000);
-}
-
-// Функция завершения голосования
-function endPoll() {
-  clearInterval(countdownInterval); // Останавливаем таймер
-  pollActive = false;
-
-  // Подсчёт голосов
-  const voteCounts = Object.values(votes).reduce((acc, vote) => {
-    acc[vote] = (acc[vote] || 0) + 1;
-    return acc;
-  }, {});
-
-  const winner = Object.entries(voteCounts).sort((a, b) => b[1] - a[1])[0];
-  const winnerText = winner ? `Победитель голосования: ${winner[0]}` : "Нет голосов";
-  pollResults.textContent = `${winnerText} (${Object.keys(votes).length} участников)`;
-  pollResults.classList.remove("hidden");
-
-  // Скрываем виджет через 15 секунд
-  setTimeout(() => {
-    pollContainer.classList.add("hidden");
-  }, 15000);
-}
-
-// Инициализация ComfyJS
+// Получаем имя канала из URL
 const urlParams = new URLSearchParams(window.location.search);
-const channel = urlParams.get("channel") || "ВашКанал"; // Получаем имя канала из URL
-ComfyJS.Init(channel);
+const channelName = urlParams.get("channel");
 
-// Обработка сообщений из чата
-ComfyJS.OnChat = (user, message, flags, self, extra) => {
-  if (flags.mod || flags.broadcaster) { // Только модераторы или стример
-    const [command, duration] = message.split(" ");
-    if (command === "!голосование") {
-      const pollTime = parseInt(duration); // Попытка преобразовать параметр времени
-      if (pollActive) {
-        endPoll(); // Завершаем текущее голосование
-      } else {
-        startPoll(isNaN(pollTime) ? 60 : pollTime); // Используем параметр или 60 секунд по умолчанию
+if (!channelName) {
+  console.error("Имя канала не указано. Добавьте параметр ?channel=ИмяКанала в URL.");
+  message.textContent = "Ошибка: Укажите канал через URL (например, ?channel=YourChannel)";
+  widget.style.display = "block";
+} else {
+  // Инициализация ComfyJS с заданным каналом
+  ComfyJS.Init(channelName);
+
+  ComfyJS.onCommand = (user, command, message, flags, extra) => {
+    if (command === "опрос" && isAllowedToStart(user, flags)) {
+      handleVotingCommand(message);
+    }
+  };
+}
+
+function isAllowedToStart(user, flags) {
+  // Проверяем, может ли пользователь начать голосование
+  return flags.mod || user.toLowerCase() === channelName.toLowerCase();
+}
+
+function handleVotingCommand(message) {
+  if (votingActive) {
+    // Если голосование уже активно, завершить его досрочно
+    endVoting();
+  } else {
+    // Если голосование не активно, начать новое
+    const args = message.split(" ");
+    const duration = parseInt(args[0], 10); // Длительность голосования в секундах
+    startVoting(isNaN(duration) ? 90 : duration); // Если длительность не указана, используем 90 секунд
+  }
+}
+
+function startVoting(duration) {
+  votingActive = true;
+  votes = {};
+  userVotes = {}; // Очищаем данные о голосах пользователей
+
+  widget.style.display = "block";
+  message.textContent = `Отправьте в чат номер, за который хотите проголосовать`;
+  result.textContent = "";
+
+  ComfyJS.onChat = (user, message) => {
+    if (votingActive) {
+      const vote = parseInt(message.trim(), 10);
+      if (vote >= 1 && vote <= 10) {
+        // Проверяем, голосовал ли пользователь
+        if (!userVotes[user]) {
+          userVotes[user] = vote; // Запоминаем, что пользователь проголосовал
+          votes[vote] = (votes[vote] || 0) + 1; // Увеличиваем счетчик для выбранного числа
+        }
       }
     }
-  }
+  };
 
-  // Учёт голосов пользователей
-  if (
-    pollActive &&
-    /^\d$/.test(message) &&
-    parseInt(message) >= 1 &&
-    parseInt(message) <= 6
-  ) {
-    if (!votes[user]) { // Учитываем голос только один раз
-      votes[user] = parseInt(message);
+  timer = setTimeout(() => endVoting(), duration * 1000); // Завершить голосование через указанное время
+}
+
+function endVoting() {
+  if (!votingActive) return; // Если голосование уже завершено, ничего не делаем
+
+  votingActive = false;
+
+  // Найти самый популярный ответ
+  let maxVotes = 0;
+  let winner = null;
+
+  for (const [key, value] of Object.entries(votes)) {
+    if (value > maxVotes) {
+      maxVotes = value;
+      winner = key;
     }
   }
-};
+
+  message.textContent = `Победитель голосования: ${winner || "Нет ответа"}`;
+  result.textContent = `Проголосовавших: ${maxVotes || 0}`;
+
+  
+
+  clearTimeout(timer); // Останавливаем таймер, если голосование завершено досрочно
+
+  setTimeout(() => {
+    widget.style.display = "none";
+  }, 30 * 1000); // Скрыть через 30 секунд
+}
