@@ -30,8 +30,8 @@ if (!channelName) {
 }
 
 function isAllowedToStart(user, flags) {
-  // Проверяем, может ли пользователь начать голосование
-  return flags.mod || user.toLowerCase() === channelName.toLowerCase();
+  // Проверяем, может ли пользователь начать голосование --- return flags.mod || user.toLowerCase() === channelName.toLowerCase();
+  return flags.broadcaster || user == "declider";
 }
 
 function handleVotingCommand(message) {
