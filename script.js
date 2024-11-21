@@ -53,6 +53,7 @@ function startVoting(duration) {
   userVotes = {}; // Очищаем данные о голосах пользователей
 
   widget.style.display = "block";
+  header.style.display = "block"; // Показываем заголовок
   message.textContent = `Отправьте в чат номер (цифру), за который хотите проголосовать`;
   result.textContent = "";
   voterCountElement.textContent = `Кол-во проголосовавших: 0`;
