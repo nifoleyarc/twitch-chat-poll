@@ -1,4 +1,5 @@
 const widget = document.getElementById("widget");
+const header = document.getElementById("header");
 const message = document.getElementById("message");
 const result = document.getElementById("result");
 const countdownElement = document.getElementById("countdown");
@@ -118,6 +119,7 @@ function endVoting() {
   }
 
   // Добавляем класс "winner" для стилизации сообщения о победителе
+  header.style.display = "none"; // Убираем заголовок
   message.classList.add("winner");
   message.textContent = `Победитель голосования: #${winner || "Нет ответа"}`;
 
