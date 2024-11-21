@@ -31,7 +31,7 @@ if (!channelName) {
 
 function isAllowedToStart(user, flags) {
   // Проверяем, может ли пользователь начать голосование --- return flags.mod || user.toLowerCase() === channelName.toLowerCase();
-  return flags.broadcaster || user == "nikothann";
+  return flags.broadcaster || user == "Nikothann";
 }
 
 function handleVotingCommand(message) {
