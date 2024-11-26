@@ -62,7 +62,7 @@ function startVoting(duration) {
 
   // Устанавливаем начальный текст таймера
   countdownElement.textContent = `${remainingTime}`;
-  countdownElement.style.color = "blue";
+  countdownElement.style.color = "white";
 
   // Запускаем интервал обновления таймера
   countdownInterval = setInterval(() => {
