@@ -15,7 +15,7 @@
       color: black;
     }
     #header {
-      margin-top: 5px;
+      margin-top: 10px;
       font-size: 50px;
       font-weight: bold;
       color: #db4042;
@@ -28,12 +28,12 @@
       width: 900px;
       height: 500px;
       background: linear-gradient(135deg, rgba(34, 34, 34, 0.98), rgba(34, 34, 34, 0.98));
-      border-radius: 60px;
+      border-radius: 70px;
       text-align: center;
       padding: 20px;
       position: fixed;
-      bottom: 5px; /* Расположение от нижнего края */
-      right: 5px; /* Расположение от правого края */
+      bottom: 0px; /* Расположение от нижнего края */
+      right: 0px; /* Расположение от правого края */
       color: white;
     }
 #widget #message.winner {
@@ -43,13 +43,13 @@
     }
     #result {
       font-family: 'Montserrat', sans-serif;
-      font-size: 50px; /* Измените размер шрифта */
+      font-size: 35px; /* Измените размер шрифта */
       font-weight: 400; /* Сделать текст жирным (опционально) */
       color: #ffffff; /* Цвет текста */
     }
 
     #message {
-      margin-top: 5px; /* Отступ от верхней границы внутреннего текста */
+      margin-top: 10px; /* Отступ от верхней границы внутреннего текста */
       margin-bottom: 30px;
     }
   </style>
@@ -58,8 +58,8 @@
   <div id="widget">
     <p id="header">Голосование в чате!</p>
     <p id="message">Отправьте в чат номер, за который хотите проголосовать1</p>
-    <p id="voterCount" style="color: rgb(19, 136, 8); font-weight: 400; font-size: 50px; margin-top: 5px; margin-bottom: 10px;"></p>
-    <p id="countdown" style="color: rgb(255, 255, 255); font-weight: 400; font-size: 65px; margin-top: 5px; margin-bottom: 10px;"></p>
+    <p id="voterCount" style="color: rgb(19, 136, 8); font-weight: 400; font-size: 50px; margin-top: 10px; margin-bottom: 10px;"></p>
+    <p id="countdown" style="color: rgb(255, 255, 255); font-weight: 400; font-size: 65px; margin-top: 10px; margin-bottom: 10px;"></p>
     <p id="result"></p>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/comfy.js/dist/comfy.min.js"></script>
