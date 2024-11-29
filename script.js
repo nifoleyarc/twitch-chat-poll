@@ -47,6 +47,7 @@ function handleVotingCommand(message) {
   }
 }
 
+
 function startVoting(duration) {
   votingActive = true;
   votes = {};
@@ -54,7 +55,7 @@ function startVoting(duration) {
 
   widget.style.display = "block";
   header.style.display = "block"; // Показываем заголовок
-  message.textContent = `Отправьте в чат номер варианта, за который хотите проголосовать`;
+  message.textContent = `Пишите номер варианта в чат`;
   result.textContent = "";
   voterCountElement.textContent = `Кол-во проголосовавших: 0`;
 
@@ -107,6 +108,7 @@ function endVoting() {
   // Скрыть таймер
   countdownElement.textContent = "";
   countdownElement.style.display = "none";
+  voterCountElement.textContent = "";
 
   // Общая сумма голосов
   const totalVotes = Object.values(votes).reduce((sum, count) => sum + count, 0);
@@ -126,7 +128,7 @@ function endVoting() {
     const results = Object.entries(votes)
     .map(([key, value]) => {
       const percentage = ((value / totalVotes) * 100).toFixed(2); // Процент с двумя знаками после запятой
-      return `Ответ ${key}: ${value} голос(ов) (${percentage}%)`;
+      return `Вариант #${key} набрал ${value} голос(ов) (${percentage}%)`;
     })
     .join('<br>');
 
@@ -135,9 +137,15 @@ function endVoting() {
   message.classList.add("winner");
   message.textContent = `Победитель голосования: #${winner || "Нет ответа"}`;
   result.innerHTML = `
-    Проголосовавших: ${totalVotes || 0}<br>
+    Кол-во проголосовавших: ${totalVotes || 0}<br>
     ${results}
   `;
+
+  const divider = document.createElement("hr");
+  divider.style.border = "none";
+  divider.style.borderTop = "2px solid rgba(255, 255, 255, 0.5)";
+  divider.style.margin = "10px 0";
+  widget.insertBefore(divider, result);
 
   clearTimeout(timer); // Останавливаем таймер, если голосование завершено досрочно
 
