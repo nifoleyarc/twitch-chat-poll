@@ -108,6 +108,9 @@ function endVoting() {
   countdownElement.textContent = "";
   countdownElement.style.display = "none";
 
+  // Общая сумма голосов
+  const totalVotes = Object.values(votes).reduce((sum, count) => sum + count, 0);
+
   // Найти самый популярный ответ
   let maxVotes = 0;
   let winner = null;
@@ -119,10 +122,22 @@ function endVoting() {
     }
   }
 
+    // Формируем строку для отображения всех результатов
+    const results = Object.entries(votes)
+    .map(([key, value]) => {
+      const percentage = ((value / totalVotes) * 100).toFixed(2); // Процент с двумя знаками после запятой
+      return `Ответ ${key}: ${value} голос(ов) (${percentage}%)`;
+    })
+    .join('<br>');
+
   // Добавляем класс "winner" для стилизации сообщения о победителе
   header.style.display = "none"; // Убираем заголовок
   message.classList.add("winner");
   message.textContent = `Победитель голосования: #${winner || "Нет ответа"}`;
+  result.innerHTML = `
+    Проголосовавших: ${totalVotes || 0}<br>
+    ${results}
+  `;
 
   clearTimeout(timer); // Останавливаем таймер, если голосование завершено досрочно
 
@@ -132,4 +147,3 @@ function endVoting() {
     countdownElement.style.display = "block"; // Восстанавливаем видимость таймера для следующего голосования
   }, 10 * 1000); // Скрыть через 10 секунд
 }
-
