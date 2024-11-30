@@ -55,7 +55,7 @@ function startVoting(duration) {
 
   widget.style.display = "block";
   header.style.display = "block"; // Показываем заголовок
-  message.textContent = `Пишите номер варианта в чат`;
+  message.textContent = `Напишите в чат номер варианта, за который хотите проголосовать`;
   result.textContent = "";
   voterCountElement.textContent = `Кол-во проголосовавших: 0`;
 
@@ -153,5 +153,5 @@ function endVoting() {
     widget.style.display = "none";
     message.classList.remove("winner"); // Убираем класс после скрытия виджета
     countdownElement.style.display = "block"; // Восстанавливаем видимость таймера для следующего голосования
-  }, 10 * 1000); // Скрыть через 10 секунд
+  }, 15 * 1000); // Скрыть через 15 секунд
 }
