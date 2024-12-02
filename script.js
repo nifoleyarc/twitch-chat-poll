@@ -84,7 +84,7 @@ function startVoting(duration) {
   ComfyJS.onChat = (user, message) => {
     if (votingActive) {
       const vote = parseInt(message.trim(), 10);
-      if (vote >= 1 && vote <= 10) {
+      if (vote >= 1 && vote <= 8) {
         // Проверяем, голосовал ли пользователь
         if (!userVotes[user]) {
           userVotes[user] = vote; // Запоминаем, что пользователь проголосовал
