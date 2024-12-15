@@ -135,7 +135,7 @@ function endVoting() {
   // Добавляем класс "winner" для стилизации сообщения о победителе
   header.style.display = "none"; // Убираем заголовок
   message.classList.add("winner");
-  message.textContent = `Победитель голосования: #${winner || "Нет ответа"}`;
+  message.textContent = `Победитель: #${winner || "Нет ответа"}`;
   result.innerHTML = `
     Кол-во проголосовавших: ${totalVotes || 0}<br>
     ${results}
