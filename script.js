@@ -55,7 +55,7 @@ function startVoting(duration) {
 
   widget.style.display = "block";
   header.style.display = "block"; // Показываем заголовок
-  message.textContent = `Напиши в чат номер варианта`;
+  message.textContent = `Напиши в чат номер варианта, за который хочешь проголосовать.`;
   result.textContent = "";
   voterCountElement.textContent = `Кол-во проголосовавших: 0`;
 
