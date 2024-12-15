@@ -26,7 +26,7 @@
     }
     #widget {
       font-family: 'Roboto', sans-serif;
-      font-size: 58px;
+      font-size: 50px;
       display: none;
       width: 800px;
       height: 500px;
@@ -41,13 +41,14 @@
       color: white;
     }
 #widget #message.winner {
-      font-size: 80px; /* Увеличенный размер текста */
+      font-size: 90px; /* Увеличенный размер текста */
       font-weight: 700; /* Жирный текст */
-      color: #c3c0b7; /* цвет текста */
+      color: #006aff94; /* цвет текста */
+      text-shadow: 1px 1px 2px #a62afe94, 0 0 1em #65a4fd94, 0 0 0.2em #65a4fd94;
     }
     #result {
       font-family: 'Roboto', sans-serif;
-      font-size: 30px; /* Измените размер шрифта */
+      font-size: 40px; /* Измените размер шрифта */
       font-weight: 400; /* Сделать текст жирным (опционально) */
       color: #ffffff; /* Цвет текста */
     }
@@ -62,8 +63,8 @@
   <div id="widget">
     <p id="header">ГОЛОСОВАНИЕ</p>
     <p id="message">Отправьте в чат номер, за который хотите проголосовать1</p>
-    <p id="voterCount" style="color: #a8a7a6; font-weight: 400; font-size: 58px; margin-top: 10px; margin-bottom: 10px;"></p>
-    <p id="countdown" style="color: #ffb400; font-weight: 400; font-size: 65px; margin-top: 10px; margin-bottom: 10px;"></p>
+    <p id="voterCount" style="color: #a8a7a6; font-weight: 400; font-size: 50px; margin-top: 10px; margin-bottom: 10px;"></p>
+    <p id="countdown" style="color: #ffb400; font-weight: 400; font-size: 60px; margin-top: 10px; margin-bottom: 10px;"></p>
     <p id="result"></p>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/comfy.js/dist/comfy.min.js"></script>
