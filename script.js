@@ -55,7 +55,7 @@ function startVoting(duration) {
 
   widget.style.display = "block";
   header.style.display = "block"; // Показываем заголовок
-  message.textContent = `Напиши в чат номер варианта, за который хочешь проголосовать.`;
+  message.textContent = `Напиши в чат цифру от 1 до 6`;
   result.textContent = "";
   voterCountElement.textContent = `Кол-во проголосовавших: 0`;
 
@@ -83,7 +83,7 @@ function startVoting(duration) {
   ComfyJS.onChat = (user, message) => {
     if (votingActive) {
       const vote = parseInt(message.trim(), 10);
-      if (vote >= 1 && vote <= 8) {
+      if (vote >= 1 && vote <= 6) {
         // Проверяем, голосовал ли пользователь
         if (!userVotes[user]) {
           userVotes[user] = vote; // Запоминаем, что пользователь проголосовал
