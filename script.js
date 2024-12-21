@@ -136,7 +136,7 @@ function endVoting() {
   message.classList.add("winner");
   message.innerHTML = `
   <span style="color: white;">Победитель:</span> 
-  <span style="color: #ffb400; text-shadow: 1px 1px 2px red, 0 0 1em #ffd87b, 0 0 0.2em #ffd87b;">#${winner || "Нет ответа"}</span>
+  <span style="color: #ffb400;">#${winner || "Нет ответа"}</span>
 `;
 
   result.innerHTML = `
